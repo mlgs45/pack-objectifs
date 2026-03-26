@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, LoginInput } from "@/lib/validators";
+import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, ArrowRight } from "lucide-react";
@@ -57,15 +58,14 @@ function LoginForm() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(232,68,26,0.15),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(27,58,107,0.3),transparent_50%)]" />
         <div className="relative z-10 flex flex-col justify-between p-12 w-full">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 bg-gradient-accent rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-accent/30">
-              PO
-            </div>
-            <div>
-              <h1 className="text-white font-bold text-lg">Pack Objectifs</h1>
-              <p className="text-white/40 text-xs tracking-wider uppercase">CCI Centre Val-de-Loire</p>
-            </div>
-          </div>
+          <Image
+            src="/logo-ccitfe.svg"
+            alt="Team France Export"
+            width={200}
+            height={70}
+            className="brightness-0 invert"
+            priority
+          />
 
           <div className="space-y-6">
             <h2 className="text-4xl font-bold text-white leading-tight">
@@ -87,12 +87,14 @@ function LoginForm() {
       <div className="flex-1 flex items-center justify-center bg-gradient-page px-6">
         <div className="w-full max-w-sm">
           {/* Mobile logo */}
-          <div className="lg:hidden text-center mb-10">
-            <div className="inline-flex items-center justify-center h-14 w-14 bg-gradient-primary rounded-2xl mb-4 shadow-lg shadow-primary/20">
-              <span className="text-white font-bold text-xl">PO</span>
-            </div>
-            <h1 className="text-xl font-bold text-gray-900">Pack Objectifs</h1>
-            <p className="text-gray-400 text-xs tracking-wider uppercase mt-1">CCI Centre Val-de-Loire</p>
+          <div className="lg:hidden flex justify-center mb-10">
+            <Image
+              src="/logo-ccitfe.svg"
+              alt="Team France Export"
+              width={180}
+              height={60}
+              priority
+            />
           </div>
 
           <div className="space-y-2 mb-8">

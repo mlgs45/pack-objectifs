@@ -7,6 +7,7 @@ import {
   LayoutDashboard, Building2, FolderOpen, BarChart3, BookOpen,
   Users, ChevronLeft, ChevronRight
 } from "lucide-react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const navigation = [
@@ -37,16 +38,15 @@ export function Sidebar() {
         collapsed ? "w-20" : "w-64"
       )}>
         {/* Logo */}
-        <div className="h-16 flex items-center px-6 border-b border-white/10">
-          <div className="h-9 w-9 bg-gradient-accent rounded-xl flex items-center justify-center text-white font-bold text-sm shrink-0 shadow-lg shadow-accent/30">
-            PO
-          </div>
-          {!collapsed && (
-            <div className="ml-3 overflow-hidden">
-              <h1 className="text-white font-bold text-sm leading-tight">Pack Objectifs</h1>
-              <p className="text-white/40 text-[10px] font-medium tracking-wider uppercase">CCI Centre Val-de-Loire</p>
-            </div>
-          )}
+        <div className={cn("flex items-center border-b border-white/10", collapsed ? "h-16 justify-center px-2" : "h-20 px-5 py-4")}>
+          <Image
+            src="/logo-ccitfe.svg"
+            alt="Team France Export"
+            width={collapsed ? 40 : 180}
+            height={collapsed ? 40 : 60}
+            className={cn("object-contain brightness-0 invert", collapsed ? "w-10 h-10" : "w-full h-auto max-h-[52px]")}
+            priority
+          />
         </div>
 
         {/* Navigation */}
