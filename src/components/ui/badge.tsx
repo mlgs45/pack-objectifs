@@ -2,22 +2,23 @@ import { cn } from "@/lib/utils";
 
 interface BadgeProps {
   children: React.ReactNode;
-  variant?: "default" | "success" | "warning" | "error" | "info";
+  variant?: "default" | "success" | "warning" | "error" | "info" | "accent";
   className?: string;
 }
 
 const variantStyles = {
-  default: "bg-gray-100 text-gray-800",
-  success: "bg-green-100 text-green-800",
-  warning: "bg-yellow-100 text-yellow-800",
-  error: "bg-red-100 text-red-800",
-  info: "bg-blue-100 text-blue-800",
+  default: "bg-gray-100 text-gray-600 ring-gray-200/50",
+  success: "bg-emerald-50 text-emerald-700 ring-emerald-200/50",
+  warning: "bg-amber-50 text-amber-700 ring-amber-200/50",
+  error: "bg-red-50 text-red-700 ring-red-200/50",
+  info: "bg-sky-50 text-sky-700 ring-sky-200/50",
+  accent: "bg-accent-50 text-accent-700 ring-accent-200/50",
 };
 
 export function Badge({ children, variant = "default", className }: BadgeProps) {
   return (
     <span className={cn(
-      "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
+      "inline-flex items-center rounded-lg px-2 py-0.5 text-[11px] font-semibold tracking-wide ring-1 ring-inset",
       variantStyles[variant],
       className
     )}>

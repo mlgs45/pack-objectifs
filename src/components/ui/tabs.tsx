@@ -19,25 +19,23 @@ export function Tabs({ tabs, defaultTab, className }: TabsProps) {
 
   return (
     <div className={className}>
-      <div className="border-b border-gray-200">
-        <nav className="flex gap-0 -mb-px overflow-x-auto">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={cn(
-                "px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap",
-                activeTab === tab.id
-                  ? "border-primary text-primary"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              )}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </nav>
+      <div className="inline-flex items-center bg-gray-100/80 rounded-xl p-1 mb-6">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={cn(
+              "px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200",
+              activeTab === tab.id
+                ? "bg-white text-gray-900 shadow-sm"
+                : "text-gray-500 hover:text-gray-700"
+            )}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
-      <div className="mt-4">
+      <div>
         {tabs.find((t) => t.id === activeTab)?.content}
       </div>
     </div>

@@ -1,12 +1,16 @@
-import { Header } from "@/components/layout/header";
+import { Sidebar } from "@/components/layout/sidebar";
+import { TopBar } from "@/components/layout/top-bar";
 
 export default function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      <Header />
-      <main className="max-w-screen-2xl mx-auto px-4 py-6">
-        {children}
-      </main>
-    </>
+    <div className="flex min-h-screen">
+      <Sidebar />
+      <div className="flex-1 flex flex-col min-h-screen lg:ml-64">
+        <TopBar />
+        <main className="flex-1 p-6 lg:p-8">
+          {children}
+        </main>
+      </div>
+    </div>
   );
 }

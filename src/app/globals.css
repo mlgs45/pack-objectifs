@@ -12,6 +12,7 @@
   --color-primary-700: #142D55;
   --color-primary-800: #11264A;
   --color-primary-900: #0D1F3F;
+  --color-primary-950: #091530;
 
   --color-accent: #E8441A;
   --color-accent-50: #FEF0EB;
@@ -25,10 +26,34 @@
   --color-accent-800: #A02F11;
   --color-accent-900: #88280E;
 
-  --color-background: #F8FAFC;
-  --color-success: #22C55E;
+  --color-background: #F0F4F8;
+  --color-surface: #FFFFFF;
+  --color-success: #10B981;
   --color-warning: #F59E0B;
   --color-error: #EF4444;
+}
+
+/* Modern scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Smooth transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 
 /* TipTap placeholder */
@@ -38,4 +63,68 @@
   float: left;
   height: 0;
   pointer-events: none;
+}
+
+/* Glass effect utility */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-dark {
+  background: rgba(11, 21, 48, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Gradient background */
+.bg-gradient-page {
+  background: linear-gradient(135deg, #F0F4F8 0%, #E8EDF5 50%, #F0F4F8 100%);
+}
+
+/* Card depth animation */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -8px rgba(27, 58, 107, 0.12), 0 4px 8px -4px rgba(27, 58, 107, 0.08);
+}
+
+/* Gradient text */
+.text-gradient {
+  background: linear-gradient(135deg, #1B3A6B 0%, #2D5AA0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Accent gradient */
+.bg-gradient-accent {
+  background: linear-gradient(135deg, #E8441A 0%, #F0724E 100%);
+}
+
+/* Primary gradient */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #1B3A6B 0%, #2D5AA0 100%);
+}
+
+/* Sidebar gradient */
+.bg-sidebar {
+  background: linear-gradient(180deg, #0D1F3F 0%, #1B3A6B 50%, #142D55 100%);
+}
+
+/* Pulse animation for notifications */
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); opacity: 1; }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+.pulse-ring::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 9999px;
+  background: #E8441A;
+  animation: pulse-ring 1.5s ease-out infinite;
 }

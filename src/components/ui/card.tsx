@@ -4,15 +4,21 @@ interface CardProps {
   children: React.ReactNode;
   className?: string;
   onClick?: () => void;
+  glass?: boolean;
+  hover?: boolean;
 }
 
-export function Card({ children, className, onClick }: CardProps) {
+export function Card({ children, className, onClick, glass, hover = !!onClick }: CardProps) {
   return (
     <div
       onClick={onClick}
       className={cn(
-        "rounded-xl border border-gray-200 bg-white p-6 shadow-sm",
-        onClick && "cursor-pointer hover:shadow-md transition-shadow",
+        "rounded-2xl border p-6",
+        glass
+          ? "glass border-white/20 shadow-lg"
+          : "bg-white border-gray-100 shadow-sm",
+        hover && "card-hover cursor-pointer",
+        onClick && "cursor-pointer",
         className
       )}
     >
@@ -26,7 +32,7 @@ export function CardHeader({ children, className }: { children: React.ReactNode;
 }
 
 export function CardTitle({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <h3 className={cn("text-lg font-semibold text-gray-900", className)}>{children}</h3>;
+  return <h3 className={cn("text-base font-semibold text-gray-900 tracking-tight", className)}>{children}</h3>;
 }
 
 export function CardContent({ children, className }: { children: React.ReactNode; className?: string }) {
