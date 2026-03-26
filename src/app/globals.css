@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1B3A6B;
+  --color-primary-50: #EBF0F7;
+  --color-primary-100: #D6E1EF;
+  --color-primary-200: #ADC3DF;
+  --color-primary-300: #84A5CF;
+  --color-primary-400: #5B87BF;
+  --color-primary-500: #1B3A6B;
+  --color-primary-600: #183460;
+  --color-primary-700: #142D55;
+  --color-primary-800: #11264A;
+  --color-primary-900: #0D1F3F;
+
+  --color-accent: #E8441A;
+  --color-accent-50: #FEF0EB;
+  --color-accent-100: #FDE1D7;
+  --color-accent-200: #FBC3AF;
+  --color-accent-300: #F9A587;
+  --color-accent-400: #F0724E;
+  --color-accent-500: #E8441A;
+  --color-accent-600: #D03D17;
+  --color-accent-700: #B83614;
+  --color-accent-800: #A02F11;
+  --color-accent-900: #88280E;
+
+  --color-background: #F8FAFC;
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+}
+
+/* TipTap placeholder */
+.tiptap p.is-editor-empty:first-child::before {
+  color: #9ca3af;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}

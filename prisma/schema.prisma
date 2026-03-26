@@ -1,0 +1,198 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  CONSEILLER
+}
+
+enum NiveauExportateur {
+  PRIMO
+  P0
+  P1
+  P2
+}
+
+enum TypeProjet {
+  EXPORT
+  SOURCING
+  IMPLANTATION
+}
+
+enum TypePrestation {
+  DIAG_EXPORT
+  OBJECTIF_MARCHE
+  OAF
+}
+
+enum StatutPrestation {
+  EN_COURS
+  ARCHIVE
+}
+
+model User {
+  id          String   @id @default(cuid())
+  nom         String
+  prenom      String
+  email       String   @unique
+  password    String
+  role        Role     @default(CONSEILLER)
+  departement String
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  projets     ProjetUser[]
+  historiques HistoriqueModification[]
+  alertes     Alerte[]
+
+  @@map("users")
+}
+
+model Entreprise {
+  id             String            @id @default(cuid())
+  raisonSociale  String
+  siret          String?           @unique
+  dateCreation   DateTime?
+  effectif       Int?
+  effectifExport Int?
+  ca             Float?
+  caExport       Float?
+  activite       String?
+  secteurs       String[]
+  exportateur    NiveauExportateur @default(PRIMO)
+  implantations  String[]
+  ville          String?
+  codePostal     String?
+  departement    String
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  projets Projet[]
+
+  @@map("entreprises")
+}
+
+model Projet {
+  id                String     @id @default(cuid())
+  titre             String
+  type              TypeProjet
+  description       String?
+  entrepriseId      String
+  secteurClient     String[]
+  paysExportEnCours String[]
+  paysExportCibles  String[]
+  createdBy         String
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  entreprise   Entreprise   @relation(fields: [entrepriseId], references: [id], onDelete: Cascade)
+  utilisateurs ProjetUser[]
+  documents    Document[]
+  prestations  Prestation[]
+
+  @@map("projets")
+}
+
+model ProjetUser {
+  projetId String
+  userId   String
+
+  projet Projet @relation(fields: [projetId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([projetId, userId])
+  @@map("projet_users")
+}
+
+model Prestation {
+  id         String           @id @default(cuid())
+  type       TypePrestation
+  projetId   String
+  statut     StatutPrestation @default(EN_COURS)
+  archivedAt DateTime?
+  createdBy  String
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  projet     Projet      @relation(fields: [projetId], references: [id], onDelete: Cascade)
+  diagExport DiagExport?
+  oaf        OAF?
+
+  @@map("prestations")
+}
+
+model DiagExport {
+  id           String   @id @default(cuid())
+  prestationId String   @unique
+  criteres     Json     @default("{}")
+  restitution  Json?
+  updatedAt    DateTime @updatedAt
+
+  prestation Prestation @relation(fields: [prestationId], references: [id], onDelete: Cascade)
+
+  @@map("diag_exports")
+}
+
+model OAF {
+  id           String    @id @default(cuid())
+  prestationId String    @unique
+  dateDebut    DateTime?
+  dateFin      DateTime?
+  paysActions  Json      @default("[]")
+  updatedAt    DateTime  @updatedAt
+
+  prestation Prestation @relation(fields: [prestationId], references: [id], onDelete: Cascade)
+
+  @@map("oafs")
+}
+
+model Document {
+  id          String   @id @default(cuid())
+  projetId    String?
+  isRessource Boolean  @default(false)
+  titre       String
+  commentaire String?
+  fichierUrl  String
+  fichierNom  String?
+  fichierSize Int?
+  createdAt   DateTime @default(now())
+
+  projet Projet? @relation(fields: [projetId], references: [id], onDelete: SetNull)
+
+  @@map("documents")
+}
+
+model HistoriqueModification {
+  id            String   @id @default(cuid())
+  utilisateurId String
+  projetId      String?
+  prestationId  String?
+  action        String
+  detail        Json?
+  createdAt     DateTime @default(now())
+
+  utilisateur User     @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  alertes     Alerte[]
+
+  @@map("historique_modifications")
+}
+
+model Alerte {
+  id            String   @id @default(cuid())
+  utilisateurId String
+  historiqueId  String
+  vue           Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  utilisateur User                   @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  historique  HistoriqueModification @relation(fields: [historiqueId], references: [id], onDelete: Cascade)
+
+  @@map("alertes")
+}
