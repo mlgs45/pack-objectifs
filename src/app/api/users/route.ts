@@ -62,7 +62,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Cet email est déjà utilisé" }, { status: 409 });
   }
 
-  const hashedPassword = await hash(parsed.data.password || "changeme", 12);
+  if (!parsed.data.password || parsed.data.password.length < 8) {
+    return NextResponse.json({ error: "Mot de passe requis (8 caractères minimum)" }, { status: 400 });
+  }
+  const hashedPassword = await hash(parsed.data.password, 12);
 
   const user = await prisma.user.create({
     data: {

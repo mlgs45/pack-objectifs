@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { projetSchema } from "@/lib/validators";
 import { logAction } from "@/lib/historique";
+import { canModifyProject } from "@/lib/authorization";
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   const session = await auth();
@@ -29,6 +30,10 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   const session = await auth();
   if (!session) return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
 
+  // Authorization check
+  const canModify = await canModifyProject(session.user.id, (session.user as any).role, params.id);
+  if (!canModify) return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
+
   const body = await req.json();
   const parsed = projetSchema.safeParse(body);
   if (!parsed.success) {
@@ -37,7 +42,6 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
   const { utilisateurs, ...projetData } = parsed.data;
 
-  // Update projet and reassign users
   await prisma.projetUser.deleteMany({ where: { projetId: params.id } });
 
   const projet = await prisma.projet.update({
@@ -68,7 +72,11 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
   const session = await auth();
   if (!session) return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
 
-  await prisma.projet.delete({ where: { id: params.id } });
+  // Only admin can delete projects
+  if ((session.user as any).role !== "ADMIN") {
+    return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
+  }
 
+  await prisma.projet.delete({ where: { id: params.id } });
   return NextResponse.json({ success: true });
 }

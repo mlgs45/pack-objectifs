@@ -42,7 +42,7 @@ export const userSchema = z.object({
   nom: z.string().min(1, "Nom requis"),
   prenom: z.string().min(1, "Prénom requis"),
   email: z.string().email("Email invalide"),
-  password: z.string().min(6, "6 caractères minimum").optional(),
+  password: z.string().min(8, "8 caractères minimum").optional(),
   role: z.enum(["ADMIN", "CONSEILLER"]).default("CONSEILLER"),
   departement: z.string().min(1, "Département requis"),
 });

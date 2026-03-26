@@ -9,7 +9,7 @@ export async function PUT(req: NextRequest) {
 
   const { currentPassword, newPassword } = await req.json();
 
-  if (!currentPassword || !newPassword || newPassword.length < 6) {
+  if (!currentPassword || !newPassword || newPassword.length < 8) {
     return NextResponse.json({ error: "Données invalides" }, { status: 400 });
   }
 

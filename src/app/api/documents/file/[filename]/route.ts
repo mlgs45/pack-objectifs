@@ -8,7 +8,18 @@ export async function GET(req: NextRequest, { params }: { params: { filename: st
   if (!session) return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
 
   const uploadDir = process.env.UPLOAD_DIR || "./uploads";
-  const filePath = path.join(uploadDir, "documents", params.filename);
+  const baseDir = path.resolve(uploadDir, "documents");
+  const filePath = path.resolve(baseDir, params.filename);
+
+  // Prevent path traversal
+  if (!filePath.startsWith(baseDir)) {
+    return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
+  }
+
+  // Only allow safe filename characters
+  if (!/^[a-zA-Z0-9._-]+$/.test(params.filename)) {
+    return NextResponse.json({ error: "Nom de fichier invalide" }, { status: 400 });
+  }
 
   try {
     const file = await readFile(filePath);
@@ -29,6 +40,7 @@ export async function GET(req: NextRequest, { params }: { params: { filename: st
       headers: {
         "Content-Type": mimeTypes[ext] || "application/octet-stream",
         "Content-Disposition": `inline; filename="${params.filename}"`,
+        "X-Content-Type-Options": "nosniff",
       },
     });
   } catch {
