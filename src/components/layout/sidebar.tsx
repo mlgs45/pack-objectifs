@@ -46,6 +46,7 @@ export function Sidebar() {
             height={collapsed ? 40 : 60}
             className={cn("object-contain brightness-0 invert", collapsed ? "w-10 h-10" : "w-full h-auto max-h-[52px]")}
             priority
+            unoptimized
           />
         </div>
 
