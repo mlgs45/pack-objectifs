@@ -65,6 +65,7 @@ function LoginForm() {
             height={70}
             className="brightness-0 invert"
             priority
+            unoptimized
           />
 
           <div className="space-y-6">
@@ -94,6 +95,7 @@ function LoginForm() {
               width={180}
               height={60}
               priority
+              unoptimized
             />
           </div>
 
